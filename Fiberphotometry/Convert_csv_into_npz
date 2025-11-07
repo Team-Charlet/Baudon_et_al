@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+
+
+##
+#import data
+Import_data_list = ("20250914_FP114_FC3_day2_4", "20250913_FP114_FC3_day1_4")
+
+for Import_data_name in Import_data_list:
+    #convert csv into npz
+    df = pd.read_csv(f'{Import_data_name}.csv', delimiter=',', header=1, usecols=['Time(s)', 'AIn-1 - Dem (AOut-1)', 'AIn-2 - Dem (AOut-1)', 'AIn-3 - Dem (AOut-2)', 'AIn-4 - Dem (AOut-2)'])
+    df= df.T
+    df = df.to_numpy()
+    # print(df)
+
+    #separate column into individual arrays
+    (T, C1, C2, C3, C4) = (df[0], df[1], df[2], df[3], df[4])
+
+    np.savez(f'{Import_data_name}.npz', Time=T, C1=C1, C2=C2, C3=C3, C4=C4)
+
+
+    #check array names
+    showcontent = np.load(f'{Import_data_name}.npz', allow_pickle=True)
+    print(Import_data_name)
+    print(showcontent.files)
+
+    #check data and data length
+    for i in [T, C1, C2, C3, C4]:
+        print(i)
+        print(len(i))
+
+
